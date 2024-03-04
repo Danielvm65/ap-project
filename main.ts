@@ -1,6 +1,14 @@
+namespace SpriteKind {
+    export const superenemy = SpriteKind.create()
+    export const Superduper = SpriteKind.create()
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.sayText("Holding ")
     lastTimestamp = game.runtime()
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    sprites.destroy(otherSprite)
 })
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     sprites.destroy(sprite)
@@ -10,7 +18,7 @@ scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
 function Powershot2 (Time: number) {
     damage = Time * 1.2
     if (damage >= 1000) {
-        Powershot = sprites.createProjectileFromSprite(img`
+        Supershot = sprites.createProjectileFromSprite(img`
             . . . . . . 5 5 5 5 . . . . . . 
             . . . . . 5 5 4 4 5 5 . . . . . 
             . . . . 5 4 4 4 4 4 4 5 . . . . 
@@ -27,7 +35,7 @@ function Powershot2 (Time: number) {
             . . . . . . 4 5 5 4 . . . . . . 
             . . . . . . . 5 5 . . . . . . . 
             . . . . . . . 5 5 . . . . . . . 
-            `, mySprite, 0, -60)
+            `, Supershot, 0, -60)
     } else {
         Powershot = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
@@ -46,7 +54,7 @@ function Powershot2 (Time: number) {
             . . . . . . . 5 . . . . . . . . 
             . . . . . . . 5 . . . . . . . . 
             . . . . . . . 5 . . . . . . . . 
-            `, mySprite, 0, -60)
+            `, Powershot, 0, -60)
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Released, function () {
@@ -81,7 +89,7 @@ function Spawn (num: number) {
                 f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
                 . f 6 1 1 1 1 1 6 6 6 6 c . . . 
                 . . f f c c c c c c c c . . . . 
-                `, SpriteKind.Enemy)
+                `, SpriteKind.superenemy)
             Giant_monster.setVelocity(0, 30)
             for (let index = 0; index < 5; index++) {
                 tiles.placeOnRandomTile(Giant_monster, assets.tile`myTile0`)
@@ -90,9 +98,13 @@ function Spawn (num: number) {
         }
     }
 }
+sprites.onOverlap(SpriteKind.superenemy, SpriteKind.Superduper, function (sprite, otherSprite) {
+	
+})
 let Giant_monster: Sprite = null
 let Enemy_Sprite: Sprite = null
 let Powershot: Sprite = null
+let Supershot: Sprite = null
 let damage = 0
 let list: Image[] = []
 let level = 0
@@ -212,6 +224,11 @@ forever(function () {
     }
     if (info.life() == 0) {
         game.setGameOverMessage(false, "RIP you lose ")
+    }
+})
+forever(function () {
+    if (level == 3 && Number_of_enemies == 0) {
+        game.setGameOverMessage(true, "YOU SAVED THE WORLDS")
     }
 })
 forever(function () {
