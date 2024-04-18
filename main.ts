@@ -35,7 +35,7 @@ function Spawn (num: number) {
     for (let index = 0; index < num; index++) {
         Enemy_Sprite = sprites.create(list._pickRandom(), SpriteKind.Enemy)
         tiles.placeOnRandomTile(Enemy_Sprite, assets.tile`myTile0`)
-        Enemy_Sprite.setVelocity(0, 10)
+        Enemy_Sprite.setVelocity(0, randint(8, 14))
     }
     Number_of_enemies = 10
     if (level >= 3) {
